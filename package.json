@@ -1,0 +1,27 @@
+{
+  "name": "yandex-entrance-task-3",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VitalyKrenel/yandex-entrance-task-3.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/VitalyKrenel/yandex-entrance-task-3/issues"
+  },
+  "homepage": "https://github.com/VitalyKrenel/yandex-entrance-task-3#readme",
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "eslint": "^5.3.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "mocha": "^5.2.0"
+  }
+}
