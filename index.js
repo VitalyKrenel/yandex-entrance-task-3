@@ -53,7 +53,7 @@ function optimizeEnergyConsumption(data) {
       timeline[hourInterval.hour].load += device.power;
 
       const deviceList = schedule[hourInterval.hour] || [];
-      deviceList.push(device.name);
+      deviceList.push(device.id);
       schedule[hourInterval.hour] = deviceList;
     });
   });
