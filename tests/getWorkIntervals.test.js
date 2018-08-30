@@ -107,8 +107,6 @@ describe('getWorkIntervals()', function () {
     const maxLoad = 0;
     const workIntervalList = getWorkIntervals(timeline, device, maxLoad);
 
-    console.log(timeline);
-
     it('should return array with length equals 0', function () {
       assert.equal(workIntervalList.length, 0);
     });
