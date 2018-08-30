@@ -76,4 +76,24 @@ function getWorkIntervals(timeline, device, maxLoad = null) {
   return workIntervalList;
 }
 
+function getOneWorkInterval(timeline, device, maxLoad = null) {
+  const workInterval = timeline.slice(0);
+  workInterval.average = timeline.average;
+
+  if (maxLoad !== null) {
+    const overloaded = workInterval.some(
+      hourInterval => (hourInterval.load + device.power > maxLoad),
+    );
+
+    // WorkInterval have at least one overloaded hour
+    if (overloaded) {
+      // Continue to next hour
+      return null;
+    }
+  }
+
+  return workInterval;
+}
+
 exports.getWorkIntervals = getWorkIntervals;
+exports.getOneWorkInterval = getOneWorkInterval;

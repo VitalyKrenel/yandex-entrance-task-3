@@ -1,6 +1,6 @@
 const fs = require('fs');
 const { buildTimeline } = require('./src/buildTimeline.js');
-const { getWorkIntervals } = require('./src/getWorkIntervals.js');
+const { getWorkIntervals, getOneWorkInterval } = require('./src/getWorkIntervals.js');
 
 function optimizeEnergyConsumption(data) {
   const timeline = buildTimeline(data.rates).sort(
@@ -20,14 +20,24 @@ function optimizeEnergyConsumption(data) {
   const schedule = new Map();
 
   data.devices.forEach((device) => {
-    const deviceWorkIntervals = getWorkIntervals(timeline, device, data.maxPower);
-    const ascWorkIntervals = deviceWorkIntervals.sort(
-      (interval, nextInterval) => (
-        interval.average > nextInterval.average ? 1 : -1
-      ),
-    );
+    let cheapestInterval;
 
-    const cheapestInterval = ascWorkIntervals[0];
+    if (device.duration === 24) {
+      // devices that have to work 24 hours will take whole day anyway, so we
+      // don't need to calculate the least expensive interval, 
+      // any interval would be enough
+      cheapestInterval = getOneWorkInterval(timeline, device, data.maxPower);
+    } else {
+      const deviceWorkIntervals = getWorkIntervals(timeline, device, data.maxPower);
+      const ascWorkIntervals = deviceWorkIntervals.sort(
+        (interval, nextInterval) => (
+          interval.average > nextInterval.average ? 1 : -1
+        ),
+      );
+
+      [cheapestInterval] = ascWorkIntervals;
+    }
+
     const consumedPower = device.power * device.duration;
 
     // Energy price is calculated from kilowatt per hour, but consumed energy
