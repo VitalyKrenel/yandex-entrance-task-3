@@ -17,14 +17,14 @@ function optimizeEnergyConsumption(data) {
     byDevice: {},
   };
 
-  const schedule = new Map();
+  const schedule = Object.create(null);
 
   data.devices.forEach((device) => {
     let cheapestInterval;
 
     if (device.duration === 24) {
       // devices that have to work 24 hours will take whole day anyway, so we
-      // don't need to calculate the least expensive interval, 
+      // don't need to calculate the least expensive interval,
       // any interval would be enough
       cheapestInterval = getOneWorkInterval(timeline, device, data.maxPower);
     } else {
