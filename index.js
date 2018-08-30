@@ -9,7 +9,7 @@ function optimizeEnergyConsumption(data) {
 
   /**
    * @namespace
-   * @property {number} total - total amount to pay pay for electricity
+   * @property {number} total - total amount to pay for electricity
    * @property {Object.<string, number>} byDevice - device list with amount to pay for each device
    */
   const bill = {
