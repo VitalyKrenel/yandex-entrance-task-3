@@ -8,11 +8,14 @@
 /**
  * Function builds an array consisting of items, each represents an hour
  * with rate's value applyed at that moment and energy load information
+ *
  * @param {Object[]} rates - electricity rates
  * @param {number} rates[].from - time from which rate starts to apply
  * @param {number} rates[].to - time untill rate is still applying
  * @param {number} rates[].value - electricity rates
+ *
  * @returns {Array<HourInterval>} timeline - array of hour intervals
+ * @returns {number} timeline.average - average price of 1 kW/hour calculated for a whole day
  */
 
 function buildTimeline(rates) {
@@ -35,22 +38,25 @@ function buildTimeline(rates) {
     dayInterval.push(interval);
   });
 
+  // Total 1 kilowatt price paying for 24 hours
+  let total = 0;
+
   // Timeline represents an array with 24 items (for 24 hours a day)
   // Each item represents an object, with hour, load, and value properties
   const timeline = dayInterval.reduce((acc, interval) => {
     const hourInterval = interval.map((hourIntervalData, i) => {
-      acc.average += hourIntervalData.value;
+      total += hourIntervalData.value;
       return {
         hour: (i + Number(hourIntervalData.from)) % 24,
         load: 0,
         value: hourIntervalData.value,
       };
     });
-
     return acc.concat(hourInterval);
   }, []);
 
-  timeline.average = Number((timeline.average / timeline.length).toFixed(4));
+  // Average price of 1 kW/hour calculated for a whole day
+  timeline.average = Number((total / timeline.length).toFixed(4));
   return timeline;
 }
 exports.buildTimeline = buildTimeline;
