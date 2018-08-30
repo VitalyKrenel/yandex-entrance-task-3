@@ -1,4 +1,3 @@
-const fs = require('fs');
 const { buildTimeline } = require('./src/buildTimeline.js');
 const { getWorkIntervals, getOneWorkInterval } = require('./src/getWorkIntervals.js');
 
@@ -60,14 +59,13 @@ function optimizeEnergyConsumption(data) {
 
   bill.total = Number(bill.total.toFixed(4));
 
-  return JSON.stringify({
+  return {
     schedule,
     consumedEnergy: {
       value: bill.total,
       devices: bill.byDevice,
     },
-  }, null, 2);
+  };
 }
 
-const data = JSON.parse(fs.readFileSync('data/input.json', 'utf8'));
-console.log(optimizeEnergyConsumption(data));
+exports.optimizeEnergyConsumption = optimizeEnergyConsumption;
