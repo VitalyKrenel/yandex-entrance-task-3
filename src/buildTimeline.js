@@ -16,7 +16,7 @@
  */
 
 function buildTimeline(rates) {
-  const hourlyValue = [];
+  const dayInterval = [];
 
   rates.forEach((rate) => {
     let duration = 0;
@@ -32,21 +32,25 @@ function buildTimeline(rates) {
     // Each item represents hour and contains rate's electricity value
     const interval = Array(duration).fill({ value: rate.value, from: rate.from });
 
-    hourlyValue.push(interval);
+    dayInterval.push(interval);
   });
 
   // Timeline represents an array with 24 items (for 24 hours a day)
   // Each item represents an object, with hour, load, and value properties
-  const timeline = hourlyValue.reduce((acc, interval) => {
-    const initedInterval = interval.map((entry, i) => ({
-      hour: (i + Number(entry.from)) % 24,
-      load: 0,
-      value: entry.value,
-    }));
+  const timeline = dayInterval.reduce((acc, interval) => {
+    const hourInterval = interval.map((hourIntervalData, i) => {
+      acc.average += hourIntervalData.value;
+      return {
+        hour: (i + Number(hourIntervalData.from)) % 24,
+        load: 0,
+        value: hourIntervalData.value,
+      };
+    });
 
-    return acc.concat(initedInterval);
+    return acc.concat(hourInterval);
   }, []);
 
+  timeline.average = Number((timeline.average / timeline.length).toFixed(4));
   return timeline;
 }
 exports.buildTimeline = buildTimeline;
